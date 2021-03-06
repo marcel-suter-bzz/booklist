@@ -1,0 +1,35 @@
+[
+  {
+    "publisherUUID": "ecd86148-5341-43c6-81ed-f3f4595965dc",
+    "publisher": "Orbit",
+    "bookList": [
+      {
+        "bookUUID": "3247c340-c712-402e-b400-0a23a9368c97",
+        "title": "An Echo Of Things To Come",
+        "author": null,
+        "price": 32.5,
+        "isbn": "978-0-3162-7409-8"
+      },
+      {
+        "bookUUID": "db117daa-e295-4597-abcd-a69496797dc0",
+        "title": "The shadow of what was lost",
+        "author": null,
+        "price": 50,
+        "isbn": "978-1-1234-5678-9"
+      }
+    ]
+  },
+  {
+    "publisherUUID": "606cc4a5-8bfd-4e24-85c1-ecf6b9814712",
+    "publisher": "Bantam",
+    "bookList": [
+      {
+        "bookUUID": "c746a291-0ef9-4b2a-8268-392b12d636bd",
+        "title": "The Winds of Winter",
+        "author": null,
+        "price": 52.75,
+        "isbn": "978-0-1256-0432-1"
+      }
+    ]
+  }
+]

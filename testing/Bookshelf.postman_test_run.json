@@ -1,0 +1,154 @@
+{
+	"id": "487f595f-d3d0-4eee-9fec-ac7094d43cc7",
+	"name": "Bookshelf",
+	"timestamp": "2021-03-06T08:20:11.244Z",
+	"collection_id": "4f10eefe-fdc3-4e68-aa98-a3bd821956c6",
+	"folder_id": 0,
+	"environment_id": "0",
+	"totalPass": 6,
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "301d668a-0406-402a-906c-5a741c73e3b7",
+			"name": "LU03.1 Bookshelf",
+			"url": "http://localhost:8080/BookList-1.0/resource/book/list",
+			"time": 9,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status test": true,
+				"validate response": true
+			},
+			"testPassFailCounts": {
+				"Status test": {
+					"pass": 1,
+					"fail": 0
+				},
+				"validate response": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				9
+			],
+			"allTests": [
+				{
+					"Status test": true,
+					"validate response": true
+				}
+			]
+		},
+		{
+			"id": "dee9cd28-242f-4f13-9273-ffaa60bf5c47",
+			"name": "LU03.2 Read Book",
+			"url": "http://localhost:8080/BookList-1.0/resource/book/read?uuid=3247c340-c712-402e-b400-0a23a9368c97",
+			"time": 6,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status test": true,
+				"validate response": true
+			},
+			"testPassFailCounts": {
+				"Status test": {
+					"pass": 1,
+					"fail": 0
+				},
+				"validate response": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				6
+			],
+			"allTests": [
+				{
+					"Status test": true,
+					"validate response": true
+				}
+			]
+		},
+		{
+			"id": "7325a113-17be-4c68-9fb2-779fa8f4dafa",
+			"name": "LU03.3 Read unknown Book",
+			"url": "http://localhost:8080/BookList-1.0/resource/book/read?uuid=3247c340-ffff-402e-b400-0a23a9368c97",
+			"time": 10,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status test": true
+			},
+			"testPassFailCounts": {
+				"Status test": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				10
+			],
+			"allTests": [
+				{
+					"Status test": true
+				}
+			]
+		},
+		{
+			"id": "4ceb8396-70d3-4877-943c-c13628edffdd",
+			"name": "LU03.4 Read Book with invalid uuid",
+			"url": "http://localhost:8080/BookList-1.0/resource/book/read?uuid=3247c340-xyzq-402e-b400-0a23a9368c97",
+			"time": 13,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Status test": true
+			},
+			"testPassFailCounts": {
+				"Status test": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				13
+			],
+			"allTests": [
+				{
+					"Status test": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 38,
+	"collection": {
+		"requests": [
+			{
+				"id": "301d668a-0406-402a-906c-5a741c73e3b7",
+				"method": "GET"
+			},
+			{
+				"id": "dee9cd28-242f-4f13-9273-ffaa60bf5c47",
+				"method": "GET"
+			},
+			{
+				"id": "7325a113-17be-4c68-9fb2-779fa8f4dafa",
+				"method": "GET"
+			},
+			{
+				"id": "4ceb8396-70d3-4877-943c-c13628edffdd",
+				"method": "GET"
+			}
+		]
+	}
+}
