@@ -72,6 +72,7 @@ public class DataHandler {
 
     /**
      * finds a publisher by the uuid
+     *
      * @param uuid the publisherUUID
      * @return the publisher
      */
@@ -99,6 +100,73 @@ public class DataHandler {
         }
 
         return null;
+    }
+
+    /**
+     * adds a book to the publisher
+     *
+     * @param book
+     * @param publisherUUID
+     * @return success
+     */
+    public static boolean addBook(Book book, String publisherUUID) {
+        Publisher publisher = findPublisherByUUID(publisherUUID);
+        if (publisher == null) {
+            return false;
+        } else {
+            publisher.getBookList().add(book);
+            writeJSON();
+            return true;
+        }
+
+    }
+
+    /**
+     * updates a book by deleting and inserting it
+     *
+     * @param book
+     * @param publisherUUID
+     * @return success
+     */
+    public static boolean updateBook(Book book, String publisherUUID) {
+        deleteBook(book.getBookUUID());
+        return addBook(book, publisherUUID);
+    }
+
+    /**
+     * deletes a book identified by its uuid
+     *
+     * @param bookUUID
+     * @return success
+     */
+    public static boolean deleteBook(String bookUUID) {
+        for (Publisher publisher : getPublisherList()) {
+            for (Book book : publisher.getBookList()) {
+                if (book.getBookUUID().equals(bookUUID)) {
+                    publisher.getBookList().remove(book);
+                    writeJSON();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * write the publishers with their books
+     */
+    private static void writeJSON() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Writer writer;
+        FileOutputStream fileOutputStream = null;
+
+        try {
+            fileOutputStream = new FileOutputStream(Config.getProperty("publisherJSON"));
+            writer = new BufferedWriter(new OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8));
+            objectMapper.writeValue(writer, publisherList);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     /**
