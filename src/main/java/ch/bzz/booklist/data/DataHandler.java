@@ -33,7 +33,7 @@ public class DataHandler {
     /**
      * gets a list of all publishers with their books
      *
-     * @return
+     * @return list of publishers
      */
     public static List<Publisher> getPublisherList() {
         if (publisherList == null) {
@@ -58,7 +58,7 @@ public class DataHandler {
      * find the publisher for a book
      *
      * @param bookUUID
-     * @return
+     * @return the publisher of this book
      */
     public static Publisher findPublisherByBook(String bookUUID) {
         for (Publisher publisher : getPublisherList()) {
@@ -68,6 +68,21 @@ public class DataHandler {
             }
         }
         return null;
+    }
+
+    /**
+     * finds a publisher by the uuid
+     * @param uuid the publisherUUID
+     * @return the publisher
+     */
+    private static Publisher findPublisherByUUID(String uuid) {
+        Publisher publisher = null;
+        for (Publisher entry : getPublisherList()) {
+            if (entry.getPublisherUUID().equals(uuid)) {
+                publisher = entry;
+            }
+        }
+        return publisher;
     }
 
     /**
