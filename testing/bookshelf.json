@@ -12,7 +12,7 @@
       },
       {
         "bookUUID": "db117daa-e295-4597-abcd-a69496797dc0",
-        "title": "The shadow of what was lost",
+        "title": "The Shadow of What Was Lost",
         "author": null,
         "price": 50,
         "isbn": "978-1-1234-5678-9"
@@ -31,5 +31,22 @@
         "isbn": "978-0-1256-0432-1"
       }
     ]
+  },
+  {
+    "publisherUUID": "06fc334d-7b02-434f-9222-6544d30d8832",
+    "publisher": "DAW Books",
+    "bookList": [
+      {
+        "bookUUID": "73bd4187-a5b7-4864-be79-327bb8ed43bf",
+        "title": "The wise man's fear",
+        "author": "Patrick Rothfuss",
+        "price": "27.75",
+        "isbn": "978-0-7564-0473-4"
+      }
+    ]
+  },
+  {
+    "publisherUUID": "b88659df-cb5f-40dc-89b3-05867201f415",
+    "publisher": "Empty publisher"
   }
 ]

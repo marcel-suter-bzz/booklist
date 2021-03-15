@@ -3,7 +3,9 @@ package ch.bzz.booklist.data;
 import ch.bzz.booklist.model.Book;
 import ch.bzz.booklist.model.Publisher;
 import ch.bzz.booklist.service.Config;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -47,8 +49,10 @@ public class DataHandler {
         List<Book> bookList = new ArrayList<>();
 
         for (Publisher publisher : getPublisherList()) {
-            for (Book book : publisher.getBookList()) {
-                bookList.add(book);
+            if (publisher.getBookList() != null) {
+                for (Book book : publisher.getBookList()) {
+                    bookList.add(book);
+                }
             }
         }
         return bookList;
@@ -76,7 +80,7 @@ public class DataHandler {
      * @param uuid the publisherUUID
      * @return the publisher
      */
-    private static Publisher findPublisherByUUID(String uuid) {
+    public static Publisher findPublisherByUUID(String uuid) {
         Publisher publisher = null;
         for (Publisher entry : getPublisherList()) {
             if (entry.getPublisherUUID().equals(uuid)) {
@@ -84,6 +88,52 @@ public class DataHandler {
             }
         }
         return publisher;
+    }
+
+    /**
+     * inserts a new publisher
+     *
+     * @param publisher the publisher to be inserted
+     */
+    public static void insertPublisher(Publisher publisher) {
+        getPublisherList().add(publisher);
+        writeJSON();
+    }
+
+    /**
+     * updates an existing publisher
+     *
+     * @param publisher the updated publisher
+     * @return success
+     */
+    public static boolean updatePublisher(Publisher publisher) {
+        boolean found = false;
+        Publisher entry = findPublisherByUUID(publisher.getPublisherUUID());
+        if (entry != null) {
+            found = true;
+            entry.setPublisher(publisher.getPublisher());
+            writeJSON();
+        }
+        return found;
+    }
+
+    /**
+     * deletes a publisher, if it has no books
+     *
+     * @param publisherUUID the uuid of the publisher to be deleted
+     * @return 0=ok, -1=referential integrity, 1=not found
+     */
+    public static int deletePublisher(String publisherUUID) {
+        int errorcode = 1;
+        Publisher publisher = findPublisherByUUID(publisherUUID);
+        if (publisher == null) errorcode = 1;
+        else if (publisher.getBookList() == null) {
+            getPublisherList().remove(publisher);
+            writeJSON();
+            errorcode = 0;
+        } else errorcode = -1;
+
+        return errorcode;
     }
 
     /**
@@ -103,13 +153,13 @@ public class DataHandler {
     }
 
     /**
-     * adds a book to the publisher
+     * inserts a book to the publisher
      *
      * @param book
      * @param publisherUUID
      * @return success
      */
-    public static boolean addBook(Book book, String publisherUUID) {
+    public static boolean insertBook(Book book, String publisherUUID) {
         Publisher publisher = findPublisherByUUID(publisherUUID);
         if (publisher == null) {
             return false;
@@ -129,8 +179,9 @@ public class DataHandler {
      * @return success
      */
     public static boolean updateBook(Book book, String publisherUUID) {
-        deleteBook(book.getBookUUID());
-        return addBook(book, publisherUUID);
+        if (deleteBook(book.getBookUUID()))
+            return insertBook(book, publisherUUID);
+        else return false;
     }
 
     /**
@@ -141,11 +192,13 @@ public class DataHandler {
      */
     public static boolean deleteBook(String bookUUID) {
         for (Publisher publisher : getPublisherList()) {
-            for (Book book : publisher.getBookList()) {
-                if (book.getBookUUID().equals(bookUUID)) {
-                    publisher.getBookList().remove(book);
-                    writeJSON();
-                    return true;
+            if (publisher.getBookList() != null) {
+                for (Book book : publisher.getBookList()) {
+                    if (book.getBookUUID().equals(bookUUID)) {
+                        publisher.getBookList().remove(book);
+                        writeJSON();
+                        return true;
+                    }
                 }
             }
         }
@@ -157,13 +210,15 @@ public class DataHandler {
      */
     private static void writeJSON() {
         ObjectMapper objectMapper = new ObjectMapper();
-        Writer writer;
+        ObjectWriter objectWriter = objectMapper.writer(new DefaultPrettyPrinter());
         FileOutputStream fileOutputStream = null;
+        Writer fileWriter;
 
+        String bookPath = Config.getProperty("publisherJSON");
         try {
-            fileOutputStream = new FileOutputStream(Config.getProperty("publisherJSON"));
-            writer = new BufferedWriter(new OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8));
-            objectMapper.writeValue(writer, publisherList);
+            fileOutputStream = new FileOutputStream(bookPath);
+            fileWriter = new BufferedWriter(new OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8));
+            objectWriter.writeValue(fileWriter, getPublisherList());
         } catch (IOException ex) {
             ex.printStackTrace();
         }

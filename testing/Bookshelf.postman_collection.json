@@ -1,10 +1,41 @@
 {
 	"info": {
-		"_postman_id": "4f10eefe-fdc3-4e68-aa98-a3bd821956c6",
-		"name": "Bookshelf",
+		"_postman_id": "8d6970e8-b563-4a53-b30c-012d8448e4fd",
+		"name": "Bookshelf_SuMa",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
+		{
+			"name": "LU02.1 Testservice",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.expect(\"HTTP-Status\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URI}}resource/test/test",
+					"host": [
+						"{{URI}}resource"
+					],
+					"path": [
+						"test",
+						"test"
+					]
+				}
+			},
+			"response": []
+		},
 		{
 			"name": "LU03.1 Bookshelf",
 			"event": [
@@ -155,6 +186,746 @@
 						{
 							"key": "uuid",
 							"value": "3247c340-xyzq-402e-b400-0a23a9368c97"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LU03.5 All Publishers",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"validate response\", function() {",
+							"    pm.response.to.be.json;",
+							"    pm.expect(pm.response.text()).to.include(\"publisher\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URI}}resource/publisher/list",
+					"host": [
+						"{{URI}}resource"
+					],
+					"path": [
+						"publisher",
+						"list"
+					],
+					"query": [
+						{
+							"key": "uuid",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LU03.6 Read Publisher",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"validate response\", function() {",
+							"    pm.response.to.be.json;",
+							"    const responseJson = pm.response.json();",
+							"    pm.expect(responseJson.publisher).to.eql(\"Orbit\");",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URI}}resource/publisher/read?uuid=ecd86148-5341-43c6-81ed-f3f4595965dc",
+					"host": [
+						"{{URI}}resource"
+					],
+					"path": [
+						"publisher",
+						"read"
+					],
+					"query": [
+						{
+							"key": "uuid",
+							"value": "ecd86148-5341-43c6-81ed-f3f4595965dc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LU03.7 Read unknown Publisher",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URI}}resource/publisher/read?uuid=fff86148-5341-43c6-81ed-f3f4595965dc",
+					"host": [
+						"{{URI}}resource"
+					],
+					"path": [
+						"publisher",
+						"read"
+					],
+					"query": [
+						{
+							"key": "uuid",
+							"value": "fff86148-5341-43c6-81ed-f3f4595965dc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LU03.8 Read Publisher with invalid uuid",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URI}}resource/publisher/read?uuid=fff86148-5341-43c6-81ed",
+					"host": [
+						"{{URI}}resource"
+					],
+					"path": [
+						"publisher",
+						"read"
+					],
+					"query": [
+						{
+							"key": "uuid",
+							"value": "fff86148-5341-43c6-81ed"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LU04.1 Insert Book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "title",
+							"value": "NewBook",
+							"type": "text"
+						},
+						{
+							"key": "author",
+							"value": "J. R. R. R. Martin",
+							"type": "text"
+						},
+						{
+							"key": "publisherUUID",
+							"value": "ecd86148-5341-43c6-81ed-f3f4595965dc",
+							"type": "text"
+						},
+						{
+							"key": "price",
+							"value": "97.35",
+							"type": "text"
+						},
+						{
+							"key": "isbn",
+							"value": "978-0-1587-0987-3",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{URI}}resource/book/create",
+					"host": [
+						"{{URI}}resource"
+					],
+					"path": [
+						"book",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LU04.2 Update Book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "bookUUID",
+							"value": "c746a291-0ef9-4b2a-8268-392b12d636bd",
+							"type": "text"
+						},
+						{
+							"key": "title",
+							"value": "Winter never ends",
+							"type": "text"
+						},
+						{
+							"key": "author",
+							"value": "J. R. R. R. Martin",
+							"type": "text"
+						},
+						{
+							"key": "publisherUUID",
+							"value": "ecd86148-5341-43c6-81ed-f3f4595965dc",
+							"type": "text"
+						},
+						{
+							"key": "price",
+							"value": "97.35",
+							"type": "text"
+						},
+						{
+							"key": "isbn",
+							"value": "978-0-1587-0987-3",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{URI}}resource/book/update",
+					"host": [
+						"{{URI}}resource"
+					],
+					"path": [
+						"book",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LU04.3 Update unknown Book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "bookUUID",
+							"value": "0046a291-0ef9-4b2a-8268-392b12d636bd",
+							"type": "text"
+						},
+						{
+							"key": "title",
+							"value": "NewBook",
+							"type": "text"
+						},
+						{
+							"key": "author",
+							"value": "J. R. R. R. Martin",
+							"type": "text"
+						},
+						{
+							"key": "publisherUUID",
+							"value": "ecd86148-5341-43c6-81ed-f3f4595965dc",
+							"type": "text"
+						},
+						{
+							"key": "price",
+							"value": "97.35",
+							"type": "text"
+						},
+						{
+							"key": "isbn",
+							"value": "978-0-1587-0987-3",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{URI}}resource/book/update",
+					"host": [
+						"{{URI}}resource"
+					],
+					"path": [
+						"book",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LU04.4 Update Book with invalid uuid",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "bookUUID",
+							"value": "XXXXa291-0ef9-4b2a-8268-392b12d636bd",
+							"type": "text"
+						},
+						{
+							"key": "title",
+							"value": "NewBook",
+							"type": "text"
+						},
+						{
+							"key": "author",
+							"value": "J. R. R. R. Martin",
+							"type": "text"
+						},
+						{
+							"key": "publisherUUID",
+							"value": "ecd86148-5341-43c6-81ed-f3f4595965dc",
+							"type": "text"
+						},
+						{
+							"key": "price",
+							"value": "97.35",
+							"type": "text"
+						},
+						{
+							"key": "isbn",
+							"value": "978-0-1587-0987-3",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{URI}}resource/book/update",
+					"host": [
+						"{{URI}}resource"
+					],
+					"path": [
+						"book",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LU04.5 Delete Book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{URI}}resource/book/delete?uuid=3247c340-c712-402e-b400-0a23a9368c97",
+					"host": [
+						"{{URI}}resource"
+					],
+					"path": [
+						"book",
+						"delete"
+					],
+					"query": [
+						{
+							"key": "uuid",
+							"value": "3247c340-c712-402e-b400-0a23a9368c97"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LU04.6 Delete unknown Book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{URI}}resource/book/delete?uuid=3247c340-ffff-402e-b400-0a23a9368c97",
+					"host": [
+						"{{URI}}resource"
+					],
+					"path": [
+						"book",
+						"delete"
+					],
+					"query": [
+						{
+							"key": "uuid",
+							"value": "3247c340-ffff-402e-b400-0a23a9368c97"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LU04.9 Bookshelf verify updates",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"validate response\", function() {",
+							"    pm.response.to.be.json;",
+							"    pm.expect(pm.response.text()).to.include(\"NewBook\");",
+							"    pm.expect(pm.response.text()).to.include(\"Winter never ends\");",
+							"    pm.expect(pm.response.text()).not.to.include(\"An Echo Of Things To Come\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URI}}resource/book/list",
+					"host": [
+						"{{URI}}resource"
+					],
+					"path": [
+						"book",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LU04.10 Insert Publisher",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "publisher",
+							"value": "Good reads",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{URI}}resource/publisher/create",
+					"host": [
+						"{{URI}}resource"
+					],
+					"path": [
+						"publisher",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LU04.11 Update Publisher",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "publisher",
+							"value": "Sugarless",
+							"type": "text"
+						},
+						{
+							"key": "publisherUUID",
+							"value": "ecd86148-5341-43c6-81ed-f3f4595965dc",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{URI}}resource/publisher/update",
+					"host": [
+						"{{URI}}resource"
+					],
+					"path": [
+						"publisher",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LU04.12  Delete Publisher",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{URI}}resource/publisher/delete?uuid=b88659df-cb5f-40dc-89b3-05867201f415",
+					"host": [
+						"{{URI}}resource"
+					],
+					"path": [
+						"publisher",
+						"delete"
+					],
+					"query": [
+						{
+							"key": "uuid",
+							"value": "b88659df-cb5f-40dc-89b3-05867201f415"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LU04.13  Delete Publisher not allowed",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(409);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{URI}}resource/publisher/delete?uuid=06fc334d-7b02-434f-9222-6544d30d8832",
+					"host": [
+						"{{URI}}resource"
+					],
+					"path": [
+						"publisher",
+						"delete"
+					],
+					"query": [
+						{
+							"key": "uuid",
+							"value": "06fc334d-7b02-434f-9222-6544d30d8832"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LU04.19 Publishers verify updates",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"validate response\", function() {",
+							"    pm.response.to.be.json;",
+							"    pm.expect(pm.response.text()).to.include(\"Good reads\");",
+							"    pm.expect(pm.response.text()).to.include(\"Sugarless\");",
+							"    pm.expect(pm.response.text()).not.to.include(\"Orbit\");",
+							"    pm.expect(pm.response.text()).not.to.include(\"Empty publisher\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URI}}resource/publisher/list",
+					"host": [
+						"{{URI}}resource"
+					],
+					"path": [
+						"publisher",
+						"list"
+					],
+					"query": [
+						{
+							"key": "uuid",
+							"value": null,
+							"disabled": true
 						}
 					]
 				}
