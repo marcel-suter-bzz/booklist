@@ -1,5 +1,10 @@
 package ch.bzz.booklist.model;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import javax.ws.rs.FormParam;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,10 +15,23 @@ import java.util.List;
  * @author Marcel Suter (Ghwalin)
  */
 public class Publisher {
+    @FormParam("publisherUUID")
+    @Pattern(regexp = "[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}")
     private String publisherUUID;
+
+    @FormParam("publisher")
+    @NotEmpty
+    @Size(min=5, max=40)
     private String publisher;
+
     private List<Book> bookList;
 
+    /**
+     * default constructor
+     */
+    public Publisher() {
+        setBookList(new ArrayList<>());
+    }
     /**
      * Gets the publisherUUID
      *

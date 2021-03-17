@@ -3,6 +3,8 @@ package ch.bzz.booklist.model;
 import ch.bzz.booklist.data.DataHandler;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.validation.constraints.*;
+import javax.ws.rs.FormParam;
 import java.math.BigDecimal;
 
 /**
@@ -13,10 +15,27 @@ import java.math.BigDecimal;
  * @author Marcel Suter (Ghwalin)
  */
 public class Book {
+    @FormParam("bookUUID")
+    @Pattern(regexp = "[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}")
     private String bookUUID;
+
+    @FormParam("title")
+    @NotEmpty
+    @Size(min=2, max=40)
     private String title;
+
+    @FormParam("author")
+    @NotEmpty
+    @Size(min=5, max=50)
     private String author;
+
+    @FormParam("price")
+    @DecimalMax(value="299.95")
+    @DecimalMin(value="0.05")
     private BigDecimal price;
+
+    @FormParam("isbn")
+    @Pattern(regexp = "(?=[0-9]{13}|[- 0-9]{17})97[89](-[0-9]{1,5}){3}-[0-9]")
     private String isbn;
 
     public Book() {

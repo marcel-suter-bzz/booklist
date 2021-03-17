@@ -3,7 +3,7 @@ package ch.bzz.booklist.service;
 /**
  * provides services for the publisher
  * <p>
- * M133: Bookshelf
+ * M133: BookList
  *
  * @author arcel Suter
  */
@@ -11,6 +11,9 @@ package ch.bzz.booklist.service;
 import ch.bzz.booklist.data.DataHandler;
 import ch.bzz.booklist.model.Publisher;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -51,22 +54,21 @@ public class PublisherService {
     @Produces(MediaType.APPLICATION_JSON)
 
     public Response readPublisher(
+            @NotEmpty
+            @Pattern(regexp = "[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}")
             @QueryParam("uuid") String publisherUUID
     ) {
         Publisher publisher = null;
         int httpStatus;
 
-        try {
-            UUID.fromString(publisherUUID);
-            publisher = DataHandler.findPublisherByUUID(publisherUUID);
-            if (publisher != null && publisher.getPublisher() != null) {
-                httpStatus = 200;
-            } else {
-                httpStatus = 404;
-            }
-        } catch (IllegalArgumentException argEx) {
-            httpStatus = 400;
+
+        publisher = DataHandler.findPublisherByUUID(publisherUUID);
+        if (publisher != null && publisher.getPublisher() != null) {
+            httpStatus = 200;
+        } else {
+            httpStatus = 404;
         }
+
 
         Response response = Response
                 .status(httpStatus)
@@ -77,19 +79,19 @@ public class PublisherService {
 
     /**
      * creates a new publisher without books
-     * @param publisherName
+     *
+     * @param publisher a valid publisher
      * @return Response
      */
     @POST
     @Path("create")
     @Produces(MediaType.TEXT_PLAIN)
     public Response createPublisher(
-            @FormParam("publisher") String publisherName
+            @Valid @BeanParam Publisher publisher
     ) {
         int httpStatus = 200;
-        Publisher publisher = new Publisher();
+
         publisher.setPublisherUUID(UUID.randomUUID().toString());
-        publisher.setPublisher(publisherName);
         DataHandler.insertPublisher(publisher);
 
         Response response = Response
@@ -101,31 +103,24 @@ public class PublisherService {
 
     /**
      * updates the publisher in all it's books
-     * @param publisherUUID  the uuid of the publisher
-     * @param publisherName  the new publisherName
+     *
+     * @param publisher a valid publisher
      * @return Response
      */
     @PUT
     @Path("update")
     @Produces(MediaType.TEXT_PLAIN)
     public Response updatePublisher(
-            @FormParam("publisherUUID") String publisherUUID,
-            @FormParam("publisher") String publisherName
+            @Valid @BeanParam Publisher publisher
     ) {
         int httpStatus = 200;
-        Publisher publisher = new Publisher();
-        try {
-            UUID.fromString(publisherUUID);
-            publisher.setPublisherUUID(publisherUUID);
-            publisher.setPublisher(publisherName);
-            if (DataHandler.updatePublisher(publisher)) {
-                httpStatus = 200;
-            } else {
-                httpStatus = 404;
-            }
-        } catch (IllegalArgumentException argEx) {
-            httpStatus = 400;
+
+        if (DataHandler.updatePublisher(publisher)) {
+            httpStatus = 200;
+        } else {
+            httpStatus = 404;
         }
+
         Response response = Response
                 .status(httpStatus)
                 .entity("")
@@ -137,6 +132,8 @@ public class PublisherService {
     @Path("delete")
     @Produces(MediaType.TEXT_PLAIN)
     public Response deletePublisher(
+            @NotEmpty
+            @Pattern(regexp = "[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}")
             @QueryParam("uuid") String publisherUUID
     ) {
         int httpStatus;
@@ -155,6 +152,7 @@ public class PublisherService {
                 .build();
         return response;
     }
+
     /**
      * sets the attribute values of the publisher object
      *

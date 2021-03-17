@@ -127,7 +127,8 @@ public class DataHandler {
         int errorcode = 1;
         Publisher publisher = findPublisherByUUID(publisherUUID);
         if (publisher == null) errorcode = 1;
-        else if (publisher.getBookList() == null) {
+        else if (publisher.getBookList() == null  ||
+                publisher.getBookList().isEmpty()) {
             getPublisherList().remove(publisher);
             writeJSON();
             errorcode = 0;
